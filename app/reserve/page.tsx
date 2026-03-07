@@ -85,7 +85,7 @@ function AvailabilityBadge({ roomId, date, bookedRooms }: { roomId: number; date
   )
 }
 
-// ── 실제 예약 폼 알맹이 (Suspense 내부용) ──────────────────
+// ── 실제 예약 폼 알맹이 ──────────────────
 function ReserveContent() {
   const searchParams = useSearchParams()
   const router = useRouter()
@@ -155,21 +155,14 @@ function ReserveContent() {
         <p className="text-forest-500 text-sm font-light">자연 속 그라운드팜에서의 특별한 하룻밤</p>
       </div>
 
-      {!user && (
-        <div className="bg-amber-50 border border-amber-200 rounded-2xl p-5 mb-6 text-center">
-          <p className="text-amber-700 font-semibold text-sm mb-3">로그인 후 예약 및 결제를 진행할 수 있습니다</p>
-          <Link href="/auth/login" className="btn-primary !py-2 !px-6 !text-sm">로그인 / 회원가입</Link>
-        </div>
-      )}
-
-      {/* 스텝 인디케이터 */}
-      <div className="flex items-center mb-8 bg-white rounded-2xl p-4 shadow-sm">
-        {[['1', '방·날짜 선택'], ['2', '예약자 정보'], ['3', '결제']].map((item, i) => {
-          const done = step > i + 1, active = step === i + 1
-          return (
-            <div key={item[0]} className={`flex items-center ${i < 2 ? 'flex-1' : ''}`}>
-              <div className="flex flex-col items-center">
-                <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold ${done || active ? 'bg-forest-500 text-white' : 'bg-gray-200 text-gray-400'}`}>
-                  {done ? '✓' : item[0]}
-                </div>
-                <div className={`text-xs mt-1 font-semibold whitespace-now
+      <div className="bg-white rounded-3xl shadow-lg p-6 sm:p-8">
+        {step === 1 && (
+          <div>
+            <h2 className="font-bold text-forest-900 text-lg mb-5">🏡 방갈로 선택</h2>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-8">
+              {ROOMS.map(room => {
+                const booked = bookedRooms.includes(room.id)
+                const isSelected = selRoom?.id === room.id
+                return (
+                  <button key={room.id} disabled={booked} onClick={() => setSelRoom(room)}
+                    className={`text-left rounded-2xl border-2 p-4 transition-all ${isSelected ? 'border-forest-500 bg-forest-50' : booked ? 'border-gray-200 bg-
