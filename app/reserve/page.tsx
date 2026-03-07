@@ -1,4 +1,5 @@
 'use client'
+export const dynamic = 'force-dynamic' // 이 줄을 추가하세요!
 import { useState, useEffect } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import Link from 'next/link'
